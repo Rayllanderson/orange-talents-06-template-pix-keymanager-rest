@@ -19,11 +19,11 @@ class RegisterKeyController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Post
-    fun register(@Body @Valid request: RegisterPixKeyRequest): HttpResponse<Map<String, String>> {
+    fun register(@Body @Valid request: RegisterPixKeyRequest): HttpResponse<Any> {
 
         logger.info("Cliente de id [${request.clientId}] está criando chave pix [${request.key} do tipo [${request.keyType}]")
 
-        val response = grpcClient.register(request.toPixKeyRequest())
+        val response = grpcClient.register(request.toGrpcRequest())
 
         logger.info("Chave criada com sucesso")
 
