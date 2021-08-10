@@ -9,9 +9,10 @@ import io.micronaut.http.uri.UriBuilder
 import io.micronaut.validation.Validated
 import org.slf4j.LoggerFactory
 import javax.validation.Valid
+import javax.validation.constraints.NotBlank
 
 @Validated
-@Controller("/api/v1/pix/keys")
+@Controller("/api/v1/clients/{id}/pix/keys")
 class RegisterKeyController(
     val grpcClient: PixKeyRegisterServiceGrpc.PixKeyRegisterServiceBlockingStub
 ) {
@@ -19,11 +20,11 @@ class RegisterKeyController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Post
-    fun register(@Body @Valid request: RegisterPixKeyRequest): HttpResponse<Any> {
+    fun register(@NotBlank id: String, @Body @Valid request: RegisterPixKeyRequest): HttpResponse<Any> {
 
-        logger.info("Cliente de id [${request.clientId}] está criando chave pix [${request.key} do tipo [${request.keyType}]")
+        logger.info("Cliente id [$id] está criando chave pix [${request}]")
 
-        val response = grpcClient.register(request.toGrpcRequest())
+        val response = grpcClient.register(request.toGrpcRequest(id))
 
         logger.info("Chave criada com sucesso")
 

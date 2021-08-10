@@ -5,15 +5,12 @@ import br.com.zupacademy.rayllanderson.KeyType
 import br.com.zupacademy.rayllanderson.PixKeyRegisterRequest
 import br.com.zupacademy.rayllanderson.core.validators.ValidPixKey
 import io.micronaut.core.annotation.Introspected
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 @ValidPixKey
 @Introspected
-class RegisterPixKeyRequest(
-    @field:NotBlank
-    val clientId: String,
+data class RegisterPixKeyRequest(
 
     @field:NotNull
     val keyType: KeyTypeRequest,
@@ -24,9 +21,9 @@ class RegisterPixKeyRequest(
     @field:NotNull
     val accountType: AccountTypeRequest,
 ) {
-    fun toGrpcRequest(): PixKeyRegisterRequest {
+    fun toGrpcRequest(clientId: String): PixKeyRegisterRequest {
         return PixKeyRegisterRequest.newBuilder()
-            .setClientId(this.clientId)
+            .setClientId(clientId)
             .setKeyType(this.keyType.keyTypeGrpc)
             .setKey(this.key ?: "")
             .setAccountType(this.accountType.accountTypeGrpc)

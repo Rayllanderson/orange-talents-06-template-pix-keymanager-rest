@@ -16,6 +16,7 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.BDDMockito.`when`
@@ -34,7 +35,14 @@ internal class RegisterKeyControllerTest {
     @field:Inject
     lateinit var grpcClient: PixKeyRegisterServiceGrpc.PixKeyRegisterServiceBlockingStub
 
-    val BASE_URL = "/api/v1/pix/keys"
+    var clientId = ""
+    var baseUrl = ""
+
+    @BeforeEach
+    fun setup(){
+        clientId = UUID.randomUUID().toString()
+        baseUrl = "/api/v1/clients/$clientId/pix/keys"
+    }
 
     @AfterEach
     fun cleanUp() {
@@ -51,13 +59,12 @@ internal class RegisterKeyControllerTest {
         `when`(grpcClient.register(Mockito.any())).thenReturn(expectedGrpcResponse)
 
         val requestBody = RegisterPixKeyRequest(
-            clientId = UUID.randomUUID().toString(),
             keyType = KeyTypeRequest.EMAIL,
             key = "kaguya@sama.com",
             accountType = AccountTypeRequest.CONTA_CORRENTE
         )
 
-        val request = HttpRequest.POST(BASE_URL, requestBody)
+        val request = HttpRequest.POST(baseUrl, requestBody)
         val response = restClient.toBlocking().exchange(request, RegisterPixKeyRequest::class.java)
 
         with(response) {
@@ -77,13 +84,12 @@ internal class RegisterKeyControllerTest {
         `when`(grpcClient.register(Mockito.any())).thenReturn(expectedGrpcResponse)
 
         val requestBody = RegisterPixKeyRequest(
-            clientId = UUID.randomUUID().toString(),
             keyType = KeyTypeRequest.RANDOM,
             key = null,
             accountType = AccountTypeRequest.CONTA_CORRENTE
         )
 
-        val request = HttpRequest.POST(BASE_URL, requestBody)
+        val request = HttpRequest.POST(baseUrl, requestBody)
         val response = restClient.toBlocking().exchange(request, RegisterPixKeyRequest::class.java)
 
         with(response) {
@@ -100,13 +106,12 @@ internal class RegisterKeyControllerTest {
         `when`(grpcClient.register(Mockito.any())).thenThrow(expectedError)
 
         val requestBody = RegisterPixKeyRequest(
-            clientId = UUID.randomUUID().toString(),
             keyType = KeyTypeRequest.EMAIL,
             key = "kaguya@sama.com",
             accountType = AccountTypeRequest.CONTA_CORRENTE
         )
 
-        val request = HttpRequest.POST(BASE_URL, requestBody)
+        val request = HttpRequest.POST(baseUrl, requestBody)
         val error = assertThrows<HttpClientResponseException> {
             restClient.toBlocking().exchange(request, RegisterPixKeyRequest::class.java)
         }
@@ -121,13 +126,12 @@ internal class RegisterKeyControllerTest {
     fun `shouldn't register new pix key when key is not formatted`() {
 
         val requestBody = RegisterPixKeyRequest(
-            clientId = UUID.randomUUID().toString(),
             keyType = KeyTypeRequest.EMAIL,
             key = "kaguya-sama.com",
             accountType = AccountTypeRequest.CONTA_CORRENTE
         )
 
-        val request = HttpRequest.POST(BASE_URL, requestBody)
+        val request = HttpRequest.POST(baseUrl, requestBody)
         val error = assertThrows<HttpClientResponseException> {
             restClient.toBlocking().exchange(request, RegisterPixKeyRequest::class.java)
         }
@@ -143,13 +147,12 @@ internal class RegisterKeyControllerTest {
     fun `shouldn't register new pix key when key is not present and type is not random`() {
 
         val requestBody = RegisterPixKeyRequest(
-            clientId = UUID.randomUUID().toString(),
             keyType = KeyTypeRequest.EMAIL,
             key = "",
             accountType = AccountTypeRequest.CONTA_CORRENTE
         )
 
-        val request = HttpRequest.POST(BASE_URL, requestBody)
+        val request = HttpRequest.POST(baseUrl, requestBody)
         val error = assertThrows<HttpClientResponseException> {
             restClient.toBlocking().exchange(request, RegisterPixKeyRequest::class.java)
         }
