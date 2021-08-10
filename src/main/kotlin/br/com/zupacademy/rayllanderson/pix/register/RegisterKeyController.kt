@@ -28,7 +28,9 @@ class RegisterKeyController(
 
         logger.info("Chave criada com sucesso")
 
-        val uri = UriBuilder.of("/api/v1/pix/keys/{pixId}").expand(mutableMapOf("pixId" to response.pixId))
+        val uri = UriBuilder.of("/api/v1/clients/{id}/pix/keys/{pixId}").expand(
+            mutableMapOf("id" to id, "pixId" to response.pixId)
+        )
 
         return HttpResponse.created(uri)
     }

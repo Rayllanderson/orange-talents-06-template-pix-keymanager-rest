@@ -1,6 +1,7 @@
 package br.com.zupacademy.rayllanderson.core.factory
 
 import br.com.zupacademy.rayllanderson.PixKeyDeleteServiceGrpc
+import br.com.zupacademy.rayllanderson.PixKeyFindDetailsServiceGrpc
 import br.com.zupacademy.rayllanderson.PixKeyRegisterServiceGrpc
 import io.grpc.ManagedChannel
 import io.micronaut.context.annotation.Factory
@@ -17,5 +18,8 @@ class GrpcClientFactory(
 
     @Singleton
     fun deleteKey() = PixKeyDeleteServiceGrpc.newBlockingStub(channel)
+
+    @Singleton
+    fun findDetails() = PixKeyFindDetailsServiceGrpc.newBlockingStub(channel)
 
 }
