@@ -17,7 +17,7 @@ class DeleteKeyController(
     val grpcClient: PixKeyDeleteServiceGrpc.PixKeyDeleteServiceBlockingStub
 ) {
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @Delete
     fun delete(@NotBlank @PathVariable id: String, @Body @Valid request: DeletePixKeyRequest): HttpResponse<Any>{
