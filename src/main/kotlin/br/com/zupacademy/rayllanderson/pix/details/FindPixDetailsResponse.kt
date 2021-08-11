@@ -33,7 +33,7 @@ class FindPixDetailsResponse(
         val number: String = grpcAccountResponse.number
         val accountType: String = when(grpcAccountResponse.accountType) {
             AccountType.CONTA_POUPANCA -> AccountType.CONTA_POUPANCA.toString()
-            AccountType.CONTA_CORRENTE -> AccountType.CONTA_POUPANCA.toString()
+            AccountType.CONTA_CORRENTE -> AccountType.CONTA_CORRENTE.toString()
             else -> "DESCONHECIDA"
         }
     }
