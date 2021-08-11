@@ -13,13 +13,7 @@ class FindPixKeyListResponse(
 ) {
     val clientId: String = pixKey.clientId
     val pixId: String = pixKey.pixId
-    val keyType: String = when(pixKey.keyType) {
-        KeyType.CPF -> KeyType.CPF.toString()
-        KeyType.EMAIL -> KeyType.EMAIL.toString()
-        KeyType.PHONE -> KeyType.PHONE.toString()
-        KeyType.RANDOM -> KeyType.RANDOM.toString()
-        else -> "DESCONHECIDA"
-    }
+    val keyType: String = pixKey.keyType.toString()
     val key: String = pixKey.key
     val accountType: String = when(pixKey.accountType) {
         AccountType.CONTA_POUPANCA -> AccountType.CONTA_POUPANCA.toString()
