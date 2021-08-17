@@ -2,6 +2,14 @@ micronaut:
   application:
     name: keyManagerREST
 
+endpoints:
+  all:
+    sensitive: ${HTTP_SENSITIVE:true}
+  health:
+    enabled: ${HEALTH_ENABLED:true}
+    sensitive: ${HEALTH_SENSITIVE:false}
+    details-visible: ${HEALTH_DETAILS_VISIBLE:ANONYMOUS}
+
 grpc:
   client:
     plaintext: ${GRPC_CLIENT_PLAINTEXT:true}
