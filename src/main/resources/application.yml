@@ -4,8 +4,8 @@ micronaut:
 
 grpc:
   client:
-    plaintext: true
-    max-retry-attempts: 10
+    plaintext: ${GRPC_CLIENT_PLAINTEXT:true}
+    max-retry-attempts: ${GRPC_CLIENT_RETRY_ATTEMPTS:10}
   channels:
     pixKeyManager:
       address: ${PIX_KEY_MANAGER_URL:`localhost:50051`}
