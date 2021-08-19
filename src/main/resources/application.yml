@@ -16,4 +16,4 @@ grpc:
     max-retry-attempts: ${GRPC_CLIENT_RETRY_ATTEMPTS:10}
   channels:
     pixKeyManager:
-      address: ${PIX_KEY_MANAGER_URL:`localhost:50051`}
+      address: ${KEY_MANAGER_HOST:localhost}:${KEY_MANAGER_PORT:50051}
