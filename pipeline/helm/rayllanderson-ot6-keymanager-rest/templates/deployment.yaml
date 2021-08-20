@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom: 
             - configMapRef: 
-                name: orange-stack-pix-keymanager-rest-configmap 
+                name: rayllanderson-ot6-keymanager-rest-configmap 
           ports:
             - name: http
               containerPort: 8080
